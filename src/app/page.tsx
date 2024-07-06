@@ -20,7 +20,8 @@ export default function HomePage() {
   const [message, setMessage] = useState("");
   const [isLoading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setLoading(true);
 
     const res = await fetch("/api/signup", {
