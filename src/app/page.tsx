@@ -1,14 +1,26 @@
 "use client";
-import { Container, Typography, TextField, Button, Box } from "@mui/material";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Backdrop,
+  CircularProgress,
+} from "@mui/material";
 import { useState } from "react";
 
 export default function HomePage() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    setLoading(true);
+
     const res = await fetch("/api/signup", {
       method: "POST",
       headers: {
@@ -16,8 +28,16 @@ export default function HomePage() {
       },
       body: JSON.stringify({ email, name }),
     });
-    console.log(res);
+    const data = await res.json();
+    setMessage(data.message);
+    if (res.ok) {
+      setEmail("");
+      setName("");
+    }
+
+    setLoading(false);
   };
+
   return (
     <Box
       sx={{
@@ -29,6 +49,15 @@ export default function HomePage() {
         alignItems: "center",
       }}
     >
+      <Backdrop
+        sx={{
+          color: "#EEEEEE",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container maxWidth="sm">
         <Box textAlign="center" py={12}>
           <Typography
@@ -115,7 +144,7 @@ export default function HomePage() {
               type="submit"
               variant="contained"
               sx={{
-                mt: 3,
+                my: 3,
                 bgcolor: "black",
                 borderRadius: "1rem",
                 color: "#EEEEEE",
@@ -130,7 +159,7 @@ export default function HomePage() {
               Sign Up
             </Button>
           </Box>
-          <Typography>{message}</Typography>
+          <Typography color={"#EEEEEE"}>{message}</Typography>
         </Box>
       </Container>
     </Box>
