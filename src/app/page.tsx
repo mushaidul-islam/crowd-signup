@@ -1,37 +1,138 @@
-import Link from "next/link";
+"use client";
+import { Container, Typography, TextField, Button, Box } from "@mui/material";
+import { useState } from "react";
 
 export default function HomePage() {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, name }),
+    });
+    console.log(res);
+  };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
+    <Box
+      sx={{
+        minHeight: "100vh",
+        backgroundColor: "#0C090A",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Container maxWidth="sm">
+        <Box textAlign="center" py={12}>
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{
+              color: "#EEEEEE",
+              fontSize: {
+                md: "3.75rem",
+                sm: "3rem",
+                xs: "2rem",
+              },
+            }}
           >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
+            youthventure.ai
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            component="p"
+            gutterBottom
+            sx={{ color: "#D8D9DA" }}
           >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
-        </div>
-      </div>
-    </main>
+            Sign up to join our product waitlist !
+          </Typography>
+          <Box component="form" noValidate autoComplete="off" sx={{ mt: 3 }}>
+            <TextField
+              id="name"
+              label="Full Name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              InputProps={{
+                style: {
+                  color: "#EEEEEE",
+                  backgroundColor: "#242124",
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "#EEEEEE" },
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#EEEEEE",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#EEEEEE",
+                  },
+                },
+              }}
+            />
+            <TextField
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              id="email"
+              label="Email"
+              fullWidth
+              margin="normal"
+              InputProps={{
+                style: {
+                  color: "white",
+                  backgroundColor: "#242124",
+                  borderColor: "white",
+                },
+              }}
+              InputLabelProps={{
+                style: { color: "#EEEEEE" },
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "#EEEEEE",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#EEEEEE",
+                  },
+                },
+              }}
+            />
+
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                mt: 3,
+                bgcolor: "black",
+                borderRadius: "1rem",
+                color: "#EEEEEE",
+                fontSize: "1.2rem",
+                "&:hover": {
+                  bgcolor: "#EEEEEE",
+                  color: "#242124",
+                },
+              }}
+              onClick={handleSubmit}
+            >
+              Sign Up
+            </Button>
+          </Box>
+          <Typography>{message}</Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 }

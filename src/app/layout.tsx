@@ -2,6 +2,9 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { ThemeProvider } from "@mui/material/styles";
+import { GlobalCSS, theme } from "~/styles/theme";
+import { Box, CssBaseline } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -14,7 +17,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <CssBaseline />
+        <GlobalCSS />
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
