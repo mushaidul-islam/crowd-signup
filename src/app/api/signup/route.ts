@@ -1,10 +1,15 @@
 import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
+export type ApiPayload = {
+  email: string;
+  name: string;
+};
+
 export async function POST(req: NextRequest) {
-  const { email, name }: { email: string; name: string } = await req.json();
+  const { email, name } = (await req.json()) as ApiPayload;
 
   if (!email || !name) {
     return NextResponse.json(

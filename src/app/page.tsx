@@ -10,15 +10,17 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+export type ApiResponse = {
+  message: string;
+};
+
 export default function HomePage() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     setLoading(true);
 
     const res = await fetch("/api/signup", {
@@ -28,8 +30,8 @@ export default function HomePage() {
       },
       body: JSON.stringify({ email, name }),
     });
-    const data = await res.json();
-    setMessage(data.message);
+    const { message } = (await res.json()) as ApiResponse;
+    setMessage(message);
     if (res.ok) {
       setEmail("");
       setName("");
